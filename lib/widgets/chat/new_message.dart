@@ -3,6 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class NewMessage extends StatefulWidget {
+  final FocusNode focusNode;
+
+  NewMessage({this.focusNode});
+
   @override
   _NewMessageState createState() => _NewMessageState();
 }
@@ -16,6 +20,8 @@ class _NewMessageState extends State<NewMessage> {
   }
 
   Future<void> _send() async {
+    widget.focusNode.requestFocus();
+
     final user = await FirebaseAuth.instance.currentUser();
 
     Firestore.instance.collection('chats/czM1sKhTsV9z4MCQHx7K/messages').add({
@@ -39,6 +45,7 @@ class _NewMessageState extends State<NewMessage> {
         children: [
           Expanded(
             child: TextField(
+              focusNode: widget.focusNode,
               controller: _controller,
               decoration: InputDecoration(labelText: 'Send a message...'),
               textInputAction: TextInputAction.send,

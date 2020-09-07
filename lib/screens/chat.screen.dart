@@ -3,7 +3,20 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../widgets/chat/messages.dart';
 import '../widgets/chat/new_message.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
+  final _newMessageFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _newMessageFocusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,15 +59,22 @@ class ChatScreen extends StatelessWidget {
         ],
       ),
       body: SafeArea(
-        child: Container(
-          child: Column(
-            children: [
-              Expanded(
+        child: Column(
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onPanDown: (details) {
+                  if (_newMessageFocusNode.hasFocus) {
+                    _newMessageFocusNode.unfocus();
+                  }
+                },
                 child: Messages(),
               ),
-              NewMessage(),
-            ],
-          ),
+            ),
+            NewMessage(
+              focusNode: _newMessageFocusNode,
+            ),
+          ],
         ),
       ),
     );

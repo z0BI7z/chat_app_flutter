@@ -29,7 +29,7 @@ class Messages extends StatelessWidget {
             final documents = messagesSnapshot.data.documents;
             return GestureDetector(
               onPanDown: (details) {
-                FocusScope.of(context).unfocus();
+                // FocusScope.of(context).unfocus();
               },
               child: ListView.builder(
                   reverse: true,
