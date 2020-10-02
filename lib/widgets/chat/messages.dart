@@ -27,24 +27,19 @@ class Messages extends StatelessWidget {
               );
             }
             final documents = messagesSnapshot.data.documents;
-            return GestureDetector(
-              onPanDown: (details) {
-                // FocusScope.of(context).unfocus();
-              },
-              child: ListView.builder(
-                  reverse: true,
-                  itemCount: documents.length,
-                  itemBuilder: (context, index) {
-                    return MessageBubble(
-                      key: ValueKey(documents[index].documentID),
-                      message: documents[index]['text'],
-                      owner: documents[index]['userId'] == userSnapshot.data.uid
-                          ? MessageOwner.Self
-                          : MessageOwner.Other,
-                      userId: documents[index]['userId'],
-                    );
-                  }),
-            );
+            return ListView.builder(
+                reverse: true,
+                itemCount: documents.length,
+                itemBuilder: (context, index) {
+                  return MessageBubble(
+                    key: ValueKey(documents[index].documentID),
+                    message: documents[index]['text'],
+                    owner: documents[index]['userId'] == userSnapshot.data.uid
+                        ? MessageOwner.Self
+                        : MessageOwner.Other,
+                    userId: documents[index]['userId'],
+                  );
+                });
           },
         );
       },
