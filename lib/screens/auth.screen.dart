@@ -28,7 +28,7 @@ class _AuthScreenState extends State<AuthScreen> {
           _isLoading = true;
         });
 
-        AuthResult authResult;
+        UserCredential authResult;
         if (isLogin) {
           authResult = await _auth.signInWithEmailAndPassword(
             email: email,
@@ -44,13 +44,13 @@ class _AuthScreenState extends State<AuthScreen> {
               .ref()
               .child('user_image')
               .child(authResult.user.uid + '.jpg');
-          await ref.putFile(imageFile).onComplete;
+          await ref.putFile(imageFile);
           final url = await ref.getDownloadURL();
 
-          await Firestore.instance
+          await FirebaseFirestore.instance
               .collection('users')
-              .document(authResult.user.uid)
-              .setData({
+              .doc(authResult.user.uid)
+              .set({
             'username': username,
             'email': email,
             'imageUrl': url,
@@ -62,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
         if (error.message != null) {
           message = error.message;
         }
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(message),
           ),
@@ -72,7 +72,7 @@ class _AuthScreenState extends State<AuthScreen> {
         });
       } catch (error) {
         print(error);
-        Scaffold.of(context).showSnackBar(
+        ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(error.toString()),
           ),

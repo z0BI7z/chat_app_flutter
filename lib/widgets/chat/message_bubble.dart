@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 enum MessageOwner { Self, Other }
 
@@ -20,7 +21,7 @@ class MessageBubble extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return FutureBuilder(
-      future: Firestore.instance.collection('users').document(userId).get(),
+      future: FirebaseFirestore.instance.collection('users').doc(userId).get(),
       builder: (context, snapshot) {
         String text;
         String imageUrl;
@@ -49,8 +50,9 @@ class MessageBubble extends StatelessWidget {
               if (owner == MessageOwner.Other)
                 CircleAvatar(
                   radius: 12,
-                  backgroundImage:
-                      imageUrl.isNotEmpty ? NetworkImage(imageUrl) : null,
+                  backgroundImage: imageUrl.isNotEmpty
+                      ? CachedNetworkImageProvider(imageUrl)
+                      : null,
                 ),
               Container(
                 margin: EdgeInsets.symmetric(horizontal: 4),

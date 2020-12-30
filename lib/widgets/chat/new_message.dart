@@ -22,9 +22,11 @@ class _NewMessageState extends State<NewMessage> {
   Future<void> _send() async {
     widget.focusNode.requestFocus();
 
-    final user = await FirebaseAuth.instance.currentUser();
+    final user = FirebaseAuth.instance.currentUser;
 
-    Firestore.instance.collection('chats/czM1sKhTsV9z4MCQHx7K/messages').add({
+    FirebaseFirestore.instance
+        .collection('chats/czM1sKhTsV9z4MCQHx7K/messages')
+        .add({
       'text': _message.trim(),
       'createdAt': Timestamp.now(),
       'userId': user.uid

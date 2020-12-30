@@ -39,7 +39,7 @@ class _AuthFormState extends State<AuthForm> {
     final isValid = _formKey.currentState.validate();
 
     if (!_isLogin && _imageFile == null) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
           content: Text('Invalid image'),
@@ -49,7 +49,7 @@ class _AuthFormState extends State<AuthForm> {
     }
 
     if (!isValid) {
-      Scaffold.of(context).showSnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           backgroundColor: Colors.red,
           content: Text('Invalid field(s)'),
@@ -92,7 +92,7 @@ class _AuthFormState extends State<AuthForm> {
                         ? 'a@b.com'
                         : '',
                     keyboardType: TextInputType.emailAddress,
-                    autovalidate: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value.isEmpty || !value.contains('@')) {
                         return 'Invalid email';
@@ -112,7 +112,7 @@ class _AuthFormState extends State<AuthForm> {
                       initialValue: DotEnv().env['FLUTTER_ENV'] == 'development'
                           ? 'slkdf'
                           : '',
-                      autovalidate: true,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) {
                         if (value.isEmpty || value.length < 4) {
                           return 'Invalid username';
@@ -131,7 +131,7 @@ class _AuthFormState extends State<AuthForm> {
                     initialValue: DotEnv().env['FLUTTER_ENV'] == 'development'
                         ? 'testing'
                         : '',
-                    autovalidate: true,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
                     validator: (value) {
                       if (value.isEmpty || value.length < 7) {
                         return 'Invalid password';
